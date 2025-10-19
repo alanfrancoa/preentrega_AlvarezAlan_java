@@ -1,4 +1,6 @@
-package models;
+package models.articulos;
+
+import models.categorias.Categoria;
 
 public class Articulo {
     private int id;

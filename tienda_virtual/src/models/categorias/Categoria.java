@@ -1,4 +1,4 @@
-package models;
+package models.categorias;
 
 public class Categoria {
     private int id;

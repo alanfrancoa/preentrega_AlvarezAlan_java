@@ -3,17 +3,17 @@ package menues;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import models.Articulo;
-import models.Categoria;
+import models.articulos.Articulo;
+import models.categorias.Categoria;
 
-public class MenuInicio {
+public class MenuEmpleado {
 
     private boolean continuar = true;
     private Scanner sc;
     private ArrayList<Articulo> listaArticulos;
     private ArrayList<Categoria> listaCategorias;
 
-    public MenuInicio(Scanner sc, ArrayList<Articulo> listaArticulos, ArrayList<Categoria> listaCategorias) {
+    public MenuEmpleado(Scanner sc, ArrayList<Articulo> listaArticulos, ArrayList<Categoria> listaCategorias) {
         this.sc = sc;
         this.listaArticulos = listaArticulos;
         this.listaCategorias = listaCategorias;
@@ -26,19 +26,21 @@ public class MenuInicio {
             System.out.println("2. Agregar Artículo");
             System.out.println("3. Editar Artículo");
             System.out.println("4. Eliminar Artículo");
-
             System.out.println("-----------------------");
             System.out.println("5. Ver Categorías");
             System.out.println("6. Agregar Categoría");
             System.out.println("7. Editar Categoría");
             System.out.println("8. Eliminar Categoría");
-
             System.out.println("-----------------------");
-
             System.out.println("9. Salir");
             System.out.print("Seleccione una opción: ");
-            int opcion = sc.nextInt();
-            sc.nextLine();
+            int opcion = -1;
+            try {
+                opcion = Integer.parseInt(sc.nextLine());
+            } catch (NumberFormatException e) {
+                System.out.println("Entrada inválida. Por favor, ingrese un número.");
+                continue;
+            }
 
             switch (opcion) {
                 case 1:
@@ -47,14 +49,12 @@ public class MenuInicio {
                 case 2:
                     agregarArticulo();
                     break;
-
                 case 3:
                     editarArticulo();
                     break;
                 case 4:
                     eliminarArticulo();
                     break;
-
                 case 5:
                     listarCategorias();
                     break;
@@ -88,13 +88,28 @@ public class MenuInicio {
     private void agregarArticulo() {
         System.out.print("Ingrese el nombre del artículo: ");
         String nombre = sc.nextLine();
-        System.out.print("Ingrese el precio del artículo: ");
-        double precio = sc.nextDouble();
-        sc.nextLine(); // Limpiar el buffer
+        double precio = -1;
+        while (true) {
+            System.out.print("Ingrese el precio del artículo: ");
+            try {
+                precio = Double.parseDouble(sc.nextLine());
+                if (precio >= 0) break;
+                else System.out.println("El precio debe ser mayor o igual a cero.");
+            } catch (NumberFormatException e) {
+                System.out.println("Entrada inválida. Por favor, ingrese un número.");
+            }
+        }
         listarCategorias();
-        System.out.print("Ingrese ID de la categoría: ");
-        int categoriaId = sc.nextInt();
-        sc.nextLine(); // Limpiar el buffer
+        int categoriaId = -1;
+        while (true) {
+            System.out.print("Ingrese ID de la categoría: ");
+            try {
+                categoriaId = Integer.parseInt(sc.nextLine());
+                break;
+            } catch (NumberFormatException e) {
+                System.out.println("Entrada inválida. Por favor, ingrese un número.");
+            }
+        }
         Categoria categoriaSeleccionada = null;
         for (Categoria cat : listaCategorias) {
             if (cat.getId() == categoriaId) {
@@ -113,9 +128,16 @@ public class MenuInicio {
 
     private void editarArticulo() {
         listarArticulos();
-        System.out.println("Ingrese el ID del artículo a editar: ");
-        int id = sc.nextInt();
-        sc.nextLine(); // Limpiar el buffer
+        int id = -1;
+        while (true) {
+            System.out.print("Ingrese el ID del artículo a editar: ");
+            try {
+                id = Integer.parseInt(sc.nextLine());
+                break;
+            } catch (NumberFormatException e) {
+                System.out.println("Entrada inválida. Por favor, ingrese un número.");
+            }
+        }
         Articulo articuloAEditar = null;
         for (Articulo articulo : listaArticulos) {
             if (articulo.getId() == id) {
@@ -124,18 +146,32 @@ public class MenuInicio {
             }
         }
         if (articuloAEditar != null) {
-
-            articuloAEditar.mostrarInformacion();
-
+            System.out.println("Editando artículo:");
+            System.out.println(articuloAEditar.mostrarInformacion());
             System.out.print("Ingrese el nuevo nombre del artículo: ");
             String nuevoNombre = sc.nextLine();
-            System.out.print("Ingrese el nuevo precio del artículo: ");
-            double nuevoPrecio = sc.nextDouble();
-            sc.nextLine(); // Limpiar el buffer
+            double nuevoPrecio = -1;
+            while (true) {
+                System.out.print("Ingrese el nuevo precio del artículo: ");
+                try {
+                    nuevoPrecio = Double.parseDouble(sc.nextLine());
+                    if (nuevoPrecio >= 0) break;
+                    else System.out.println("El precio debe ser mayor o igual a cero.");
+                } catch (NumberFormatException e) {
+                    System.out.println("Entrada inválida. Por favor, ingrese un número.");
+                }
+            }
             listarCategorias();
-            System.out.print("Ingrese ID de la categoría: ");
-            int nuevaCategoriaId = sc.nextInt();
-            sc.nextLine(); // Limpiar el buffer
+            int nuevaCategoriaId = -1;
+            while (true) {
+                System.out.print("Ingrese ID de la categoría: ");
+                try {
+                    nuevaCategoriaId = Integer.parseInt(sc.nextLine());
+                    break;
+                } catch (NumberFormatException e) {
+                    System.out.println("Entrada inválida. Por favor, ingrese un número.");
+                }
+            }
             Categoria categoriaSeleccionada = null;
             for (Categoria cat : listaCategorias) {
                 if (cat.getId() == nuevaCategoriaId) {
@@ -158,9 +194,16 @@ public class MenuInicio {
 
     private void eliminarArticulo() {
         listarArticulos();
-        System.out.print("Ingrese el ID del artículo a eliminar: ");
-        int id = sc.nextInt();
-        sc.nextLine(); // Limpiar el buffer
+        int id = -1;
+        while (true) {
+            System.out.print("Ingrese el ID del artículo a eliminar: ");
+            try {
+                id = Integer.parseInt(sc.nextLine());
+                break;
+            } catch (NumberFormatException e) {
+                System.out.println("Entrada inválida. Por favor, ingrese un número.");
+            }
+        }
         Articulo articuloAEliminar = null;
         for (Articulo articulo : listaArticulos) {
             if (articulo.getId() == id) {
@@ -169,7 +212,8 @@ public class MenuInicio {
             }
         }
         if (articuloAEliminar != null) {
-            articuloAEliminar.mostrarInformacion();
+            System.out.println("Eliminando artículo:");
+            System.out.println(articuloAEliminar.mostrarInformacion());
             listaArticulos.remove(articuloAEliminar);
             System.out.println("Artículo eliminado exitosamente.");
         } else {
@@ -195,9 +239,16 @@ public class MenuInicio {
 
     private void editarCategoria() {
         listarCategorias();
-        System.out.print("Ingrese el ID de la categoría a editar: ");
-        int id = sc.nextInt();
-        sc.nextLine(); // Limpiar el buffer
+        int id = -1;
+        while (true) {
+            System.out.print("Ingrese el ID de la categoría a editar: ");
+            try {
+                id = Integer.parseInt(sc.nextLine());
+                break;
+            } catch (NumberFormatException e) {
+                System.out.println("Entrada inválida. Por favor, ingrese un número.");
+            }
+        }
         Categoria categoriaAEditar = null;
         for (Categoria categoria : listaCategorias) {
             if (categoria.getId() == id) {
@@ -209,7 +260,7 @@ public class MenuInicio {
             System.out.print("Ingrese el nuevo nombre de la categoría: ");
             String nuevoNombre = sc.nextLine();
             categoriaAEditar.setNombre(nuevoNombre);
-            categoriaAEditar.mostrarInformacion();
+            System.out.println(categoriaAEditar.mostrarInformacion());
             System.out.println("Categoría editada exitosamente.");
         } else {
             System.out.println("Categoría no encontrada.");
@@ -218,9 +269,16 @@ public class MenuInicio {
 
     private void eliminarCategoria() {
         listarCategorias();
-        System.out.print("Ingrese el ID de la categoría a eliminar: ");
-        int id = sc.nextInt();
-        sc.nextLine(); // Limpiar el buffer
+        int id = -1;
+        while (true) {
+            System.out.print("Ingrese el ID de la categoría a eliminar: ");
+            try {
+                id = Integer.parseInt(sc.nextLine());
+                break;
+            } catch (NumberFormatException e) {
+                System.out.println("Entrada inválida. Por favor, ingrese un número.");
+            }
+        }
         Categoria categoriaAEliminar = null;
         for (Categoria categoria : listaCategorias) {
             if (categoria.getId() == id) {
@@ -229,7 +287,8 @@ public class MenuInicio {
             }
         }
         if (categoriaAEliminar != null) {
-            categoriaAEliminar.mostrarInformacion();
+            System.out.println("Eliminando categoría:");
+            System.out.println(categoriaAEliminar.mostrarInformacion());
             listaCategorias.remove(categoriaAEliminar);
             System.out.println("Categoría eliminada exitosamente.");
         } else {
